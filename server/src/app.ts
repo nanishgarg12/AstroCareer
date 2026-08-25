@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import resumeRouter from './resume.js';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 import {
   User,
@@ -851,3 +853,16 @@ app.use(
     });
   }
 );
+
+// Serve React frontend in production
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const clientDist = join(__dirname, '../../client/dist');
+
+app.use(express.static(clientDist));
+
+// Catch-all: send index.html for any non-API route (React Router)
+app.get('*', (_req, res) => {
+  res.sendFile(join(clientDist, 'index.html'));
+});
