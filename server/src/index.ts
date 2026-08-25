@@ -12,7 +12,7 @@ const start = async () => {
   try {
     await mongoose.connect(config.mongo, mongoOptions);
 
-    const server = app.listen(config.port, () => {
+    const server = app.listen(config.port, '0.0.0.0', () => {
       console.log(`AstroCareer API running on port ${config.port}`);
       console.log(`Frontend allowed from: ${config.client}`);
     });
