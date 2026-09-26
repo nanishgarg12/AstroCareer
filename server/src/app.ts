@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { config } from "./config.js";
@@ -28,5 +29,9 @@ app.use(healthRouter, authRouter, profileRouter, catalogRouter, assessmentRouter
 app.use(errorHandler);
 
 const clientDist = join(dirname(fileURLToPath(import.meta.url)), "../../client/dist");
-app.use(express.static(clientDist));
-app.get("*", (_req, res) => res.sendFile(join(clientDist, "index.html")));
+// Render deploys the API and Vite frontend as separate services. Serve the SPA
+// only when its build output is actually included with this server deployment.
+if (existsSync(join(clientDist, "index.html"))) {
+  app.use(express.static(clientDist));
+  app.get("*", (_req, res) => res.sendFile(join(clientDist, "index.html")));
+}
