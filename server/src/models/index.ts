@@ -265,27 +265,6 @@ export const Question = model(
   )
 );
 
-/* =========================
-   ASSESSMENT
-========================= */
-
-export const Assessment = model(
-  'Assessment',
-  new Schema(
-    {
-      career: String,
-
-      questions: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'Question'
-        }
-      ]
-    },
-    opts
-  )
-);
-
 export const AssessmentAttempt = model(
   'AssessmentAttempt',
   new Schema(
@@ -439,26 +418,6 @@ export const CareerMatch = model(
   )
 );
 
-/* =========================
-   ROADMAP
-========================= */
-
-export const CareerRoadmap = model(
-  'CareerRoadmap',
-  new Schema(
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      },
-
-      career: String
-    },
-    opts
-  )
-);
-
 export const RoadmapTask = model(
   'RoadmapTask',
   new Schema(
@@ -496,50 +455,31 @@ export const RoadmapTask = model(
 );
 
 /* =========================
-   ASTROLOGY
+   RESUME & CAREER READINESS
+   The extracted resume is stored per user so readiness analysis can be
+   repeated without asking the student to upload the same file again.
 ========================= */
 
-export const AstrologyProfile = model(
-  'AstrologyProfile',
+export const ResumeProfile = model(
+  'ResumeProfile',
   new Schema(
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        unique: true
-      },
-
-      zodiac: String
+      user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true, index: true },
+      filename: String,
+      text: String,
+      structured: { type: Schema.Types.Mixed, default: {} }
     },
     opts
   )
 );
 
-/* =========================
-   CAREER SIMULATION
-========================= */
-
-export const CareerSimulation = model(
-  'CareerSimulation',
+export const CareerReadiness = model(
+  'CareerReadiness',
   new Schema(
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        index: true
-      },
-
-      career: String,
-
-      currentSkills: Schema.Types.Mixed,
-
-      projectedSkills: Schema.Types.Mixed,
-
-      currentScore: Number,
-
-      projectedScore: Number
+      user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true, index: true },
+      targetRole: { type: String, required: true },
+      analysis: { type: Schema.Types.Mixed, required: true }
     },
     opts
   )

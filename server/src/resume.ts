@@ -2,6 +2,9 @@ import { Router } from "express";
 import multer from "multer";
 import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
+import { ResumeProfile } from "./models/index.js";
+import { extractStructuredResume } from "./services/career-readiness.service.js";
+import { auth, id, type Authed } from "./middleware/auth.js";
 
 const router = Router();
 
@@ -156,8 +159,13 @@ const detectSkills = (text: string) => {
 
   const allSkills = [
     ...new Set(
-      Object.values(skillDatabase)
-        .flat()
+      [
+        ...Object.values(skillDatabase).flat(),
+        "docker", "aws", "redis", "testing", "authentication", "typescript",
+        "kubernetes", "linux", "ci/cd", "data structures", "algorithms",
+        "power bi", "tableau", "scikit-learn", "machine learning", "networking",
+        "security", "owasp", "accessibility", "system design", "git", "react"
+      ]
     )
   ];
 
@@ -361,8 +369,9 @@ const getJobRecommendations = (
 
 router.post(
   "/upload",
+  auth,
   upload.single("resume"),
-  async (req, res) => {
+  async (req: Authed, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({
@@ -430,6 +439,15 @@ router.post(
       const detectedSkills =
         detectSkills(cleanedText);
 
+      // Convert the uploaded file into a reusable profile representation. The
+      // readiness engine consumes this saved data, so a resume is parsed once.
+      const structured = extractStructuredResume(cleanedText, detectedSkills);
+      await ResumeProfile.findOneAndUpdate(
+        { user: id(req) },
+        { user: id(req), filename: file.originalname, text: cleanedText, structured },
+        { upsert: true, new: true }
+      );
+
       const careerMatches =
         calculateCareerMatches(
           detectedSkills
@@ -476,6 +494,8 @@ router.post(
           resumeScore,
 
           skills: detectedSkills,
+
+          structured,
 
           topCareer: topCareer
             ? {
