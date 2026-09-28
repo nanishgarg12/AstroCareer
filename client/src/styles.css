@@ -118,3 +118,38 @@ textarea { min-height: 130px; }
   .auth-content { padding: 32px 23px 27px; }
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
 }
+
+/* Keep the public pages aligned with AstroCareer's dark cosmic product theme. */
+.landing-page, .auth-page { color: #eae8ff; background-color: #070812; background-image: radial-gradient(circle at 82% 10%, #754aaa55 0, transparent 26%), radial-gradient(circle at 15% 80%, #3c5bc533 0, transparent 28%), radial-gradient(#6d5a9c55 1px, transparent 1px); background-size: auto, auto, 38px 38px; }
+.landing-nav { border-bottom-color: #ffffff16; }
+.brand, .auth-brand { color: #fff; }
+.text-link { color: #cfc8ff; }
+.landing-page .button, .auth-submit { background: linear-gradient(90deg, #8d6cff, #c375ff); box-shadow: 0 10px 26px #6e51c94d; }
+.hero-copy .eyebrow, .intro-section .eyebrow, .landing-cta .eyebrow, .auth-page .eyebrow { color: #a898ff !important; }
+.hero-copy h1, .intro-section h2, .landing-cta h2, .auth-intro h1, .auth-content h2 { font-family: 'Space Grotesk', sans-serif; color: #fff; letter-spacing: -.045em; }
+.hero-copy h1 { font-weight: 700; }
+.hero-copy h1 em { color: #c7b6ff; }
+.hero-description, .intro-section > p:last-child, .auth-intro > p:not(.eyebrow), .auth-subtitle { color: #bbb5d7; }
+.learn-link { color: #d8d2ff; border-bottom-color: #a898ff88; }
+.hero-orbit { background: radial-gradient(circle at 49% 47%, #a686ff, #6e4aba 31%, #24144c 66%, transparent 67%); box-shadow: inset -32px -24px 50px #090513aa, 0 28px 55px #22124266; }
+.orbit-ring { border-color: #bda8ff88; }
+.ring-two { border-color: #ffffff66; }
+.benefit-card { background: linear-gradient(135deg, #ffffff12, #a377ff0e); border-color: #ffffff20; box-shadow: 0 14px 45px #0004; }
+.benefit-card > span { color: #a898ff; }
+.benefit-card h3 { color: #fff; }
+.benefit-card p { color: #c4c0d7; }
+.auth-page { background-color: #070812; }
+.auth-card { background: linear-gradient(135deg, #171326f2, #0d1020f5); border-color: #ffffff20; box-shadow: 0 24px 70px #0008; }
+.auth-tabs { background: #090a16; border-bottom: 1px solid #ffffff16; }
+.auth-tabs button { color: #aaa4c5; }
+.auth-tabs button.active { background: #ffffff12; color: #fff; box-shadow: none; }
+.auth-content label { color: #d8d4ea; }
+.auth-content input { border-color: #ffffff25; background: #090a16; color: #fff; outline-color: #a898ff; }
+.auth-switch { color: #bbb5d7; }
+.auth-switch button { color: #b6a6ff; }
+
+@media (max-width: 760px) {
+  .landing-hero { grid-template-columns: 1fr; }
+  .auth-layout { grid-template-columns: 1fr; }
+  .auth-page { padding: 24px; }
+}
